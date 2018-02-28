@@ -3,6 +3,7 @@ import os
 from bs4 import BeautifulSoup
 from collections import defaultdict
 import nltk
+from nltk.corpus import stopwords
 
 class Parser:
 
@@ -18,8 +19,6 @@ class Parser:
             print("ERROR reading file at ", file_path)
 
     def read_all(self):
-        # print(Path(path_to_html + str(i)))
-        # print(os.getcwd())
         counter1 = 0
         while Path(self.html_path + str(counter1)).exists():
             counter2 = 0
@@ -43,6 +42,21 @@ class Parser:
 
         return raw_text
 
-r = Parser()
-# print(r.read_all())
-print(nltk.word_tokenize(r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/6"))))
+
+if __name__ == '__main__':
+
+    r = Parser()
+    # print(r.read_all())
+    rawData = nltk.word_tokenize(r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/6")))
+    stopWords = list(stopwords.words('english'))
+
+    processedData = defaultdict(int)
+
+    for words in rawData:
+        if len(words) > 0 and words[0].lower().isalpha() and words.lower():
+            processedData[words.lower()] += 1
+
+    print(processedData)
+
+
+
