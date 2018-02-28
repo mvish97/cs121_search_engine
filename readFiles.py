@@ -26,12 +26,15 @@ class Parser:
     def read_all(self):
         counter1 = 74
         while Path(self.html_path + str(counter1)).exists():
-            counter2 = 490
+            counter2 = 470
             while Path(self.html_path + str(counter1) + "/" + str(counter2)).exists():
                 # print(counter1, counter2)
                 self.add_to_dictionary(self.tokenize_file(self.html_to_text(\
                     self.file_to_text(self.html_path + str(counter1) + "/" + str(counter2)))),\
                     "{}/{}".format(counter1, counter2))
+
+                #print("{}/{}".format(counter1,counter2))
+
                 counter2 += 1
             counter1 += 1
 
@@ -64,7 +67,7 @@ class Parser:
         # Adds the file tokens to the main dictionary
         for k, v in token_dict.items():
             if k[0] in self.data:
-                self.data[k[0]][k].append((file_id, v, 0))
+                self.data[k[0]][k].append([file_id, v, 0])
 
     def write_file(self):
         if not os.path.exists(self.result_path):
