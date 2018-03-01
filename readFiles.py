@@ -34,6 +34,8 @@ class Parser:
                     "{}/{}".format(counter1, counter2))
                 counter2 += 1
 
+            print("FOLDER: {} and FILES: {}".format(counter1, counter2))
+
             counter1 += 1
 
     def html_to_text(self, open_file):
@@ -76,9 +78,9 @@ class Parser:
 
 if __name__ == '__main__':
     r = Parser()
-    #r.read_all()
-    #r.write_file()
-    print(r.tokenize_file((r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/3")))))
+    r.read_all()
+    r.write_file()
+    #print(r.tokenize_file((r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/3")))))
 
 
 

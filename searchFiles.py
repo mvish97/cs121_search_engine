@@ -21,7 +21,7 @@ class Searcher():
 
         data[searchTerm] = sorted(data[searchTerm], key = lambda tup: tup[2], reverse=True)
 
-        return data[searchTerm][:10]
+        return data[searchTerm][:5]
 
 
 
@@ -48,6 +48,9 @@ if __name__ == '__main__':
 
     for doc in results:
         print(doc[0], doc[1], doc[2], jsonObj[doc[0]])
+
+
+
 
 
 
