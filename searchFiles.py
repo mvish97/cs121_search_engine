@@ -1,5 +1,7 @@
 from collections import defaultdict
 import math
+import json
+
 class Searcher():
 
     def __init__(self):
@@ -19,10 +21,7 @@ class Searcher():
 
         data[searchTerm] = sorted(data[searchTerm], key = lambda tup: tup[2], reverse=True)
 
-        for doc in data[searchTerm]:
-            print(doc[0], doc[2])
-
-
+        return data[searchTerm][:10]
 
 
 
@@ -36,13 +35,21 @@ class Searcher():
             doc[2] = tf_idf
 
 
-
-
-
-
-
 if __name__ == '__main__':
     searcher = Searcher()
 
-    searcher.searchFiles('information')
+    results = searcher.searchFiles('informatics')
+
+    file = "WEBPAGES_RAW/" + "bookkeeping.json"
+
+    lib = open(file).read()
+
+    jsonObj = json.loads(lib)
+
+    for doc in results:
+        print(doc[0], doc[1], doc[2], jsonObj[doc[0]])
+
+
+
+
 

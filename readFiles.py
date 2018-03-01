@@ -24,30 +24,25 @@ class Parser:
             print("ERROR reading file at ", file_path)
 
     def read_all(self):
-        counter1 = 74
+        counter1 = 0
         while Path(self.html_path + str(counter1)).exists():
-            counter2 = 470
+            counter2 = 0
             while Path(self.html_path + str(counter1) + "/" + str(counter2)).exists():
                 # print(counter1, counter2)
                 self.add_to_dictionary(self.tokenize_file(self.html_to_text(\
                     self.file_to_text(self.html_path + str(counter1) + "/" + str(counter2)))),\
                     "{}/{}".format(counter1, counter2))
-
-                #print("{}/{}".format(counter1,counter2))
-
                 counter2 += 1
+
             counter1 += 1
 
     def html_to_text(self, open_file):
         # Takes an open file and returns the text from it
         soup = BeautifulSoup(open_file, 'html.parser')
-        tags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'title']
         raw_text = ""
 
-        for tag in tags:
-            for text in soup.find_all(tag):
-                # print(text.getText())
-                raw_text += text.getText().strip() + " "
+        for text in soup.find_all(['b', 'h1', 'h2', 'h3', 'title', 'body', 'strong']):
+            raw_text += text.getText().strip() + " "
 
         return raw_text
 
@@ -81,9 +76,9 @@ class Parser:
 
 if __name__ == '__main__':
     r = Parser()
-    r.read_all()
-    r.write_file()
-    # print(r.tokenize_file((r.html_to_text(r.file_to_text("WEBPAGES_RAW/74/496")))))
+    #r.read_all()
+    #r.write_file()
+    print(r.tokenize_file((r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/3")))))
 
 
 
