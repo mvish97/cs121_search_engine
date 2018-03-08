@@ -8,24 +8,30 @@ class Searcher():
         self.result = []
         self.result_path = "data"
         self.corpus_size = 37497
+        self.bookkeeper = "WEBPAGES_CLEAN/" + "bookkeeping.json"
+        self.local_dict = {}
+        try:
+            # The bookkeeping JSON object
+            self.bookkeeping_obj = json.loads(open(self.bookkeeper).read())
+        except:
+            print("Error opening bookkeeping file, check path")
+            return
 
+    def get_data(self, search_term):
+        if search_term[0] not in self.local_dict:
+            file = open("{}/{}".format(self.result_path, search_term[0])).read()
 
-    def searchFiles(self, searchTerm):
-        file_name = "{}/{}".format(self.result_path, searchTerm[0])
+            # Store the evaluated data in the local dictionary
+            self.local_dict[search_term[0]] = eval(file.replace("<class 'list'>", 'list'))
 
-        file = open(file_name).read()
+        # Calculate tfidf for query
+        self.calculate_tfidf(self.local_dict[search_term[0]][search_term])
+        # Sort local dict
+        self.local_dict[search_term[0]][search_term].sort(key=lambda tup: tup[2], reverse=True)
+        # Return the values for the query
+        return self.local_dict[search_term[0]][search_term]
 
-        data = eval(file.replace("<class 'list'>", 'list'))
-
-        self.calculateTFIDF(data[searchTerm])
-
-        data[searchTerm] = sorted(data[searchTerm], key = lambda tup: tup[2], reverse=True)
-
-        return data[searchTerm][:5]
-
-
-
-    def calculateTFIDF(self, posting):
+    def calculate_tfidf(self, posting):
         # Calculates the tf-idf for a given posting of a term and updates the posting
         idf = math.log(self.corpus_size/len(posting))
 
@@ -34,20 +40,33 @@ class Searcher():
             tf_idf = round(tf * idf, 5)
             doc[2] = tf_idf
 
+    def get_urls(self, queries):
+        counter_urls = defaultdict(int)
+        counter_word_count = defaultdict(int)
+        for query in queries.strip().split():
+            for d in self.get_data(query):
+                counter_urls[d[0]] += 1
+                counter_word_count[d[0]] += d[2]
+
+        results = sorted(counter_urls.items(), key=lambda x: (-x[1], -counter_word_count[x[0]]))
+        for i in range(5):
+            print(results[i], self.bookkeeping_obj[results[i][0]])
+
 
 if __name__ == '__main__':
     searcher = Searcher()
 
-    results = searcher.searchFiles('informatics')
-
-    file = "WEBPAGES_RAW/" + "bookkeeping.json"
-
-    lib = open(file).read()
-
-    jsonObj = json.loads(lib)
-
-    for doc in results:
-        print(doc[0], doc[1], doc[2], jsonObj[doc[0]])
+    searcher.get_urls('informatics')
+    # results = searcher.get_data('irvine')
+    #
+    # file = "WEBPAGES_CLEAN/" + "bookkeeping.json"
+    #
+    # lib = open(file).read()
+    #
+    # jsonObj = json.loads(lib)
+    #
+    # for doc in results:
+    #     print(doc[0], doc[1], doc[2], jsonObj[doc[0]])
 
 
 

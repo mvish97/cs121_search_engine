@@ -9,7 +9,7 @@ from string import ascii_lowercase
 class Parser:
 
     def __init__(self):
-        self.html_path = "WEBPAGES_RAW/"
+        self.html_path = "WEBPAGES_CLEAN/"
         self.result_path = "data"
         self.data = {}
 
