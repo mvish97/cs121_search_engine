@@ -8,7 +8,7 @@ class Searcher():
         self.result = []
         self.result_path = "data"
         self.corpus_size = 37497
-        self.bookkeeper = "WEBPAGES_CLEAN/" + "bookkeeping.json"
+        self.bookkeeper = "WEBPAGES_RAW/" + "bookkeeping.json"
         self.local_dict = {}
         try:
             # The bookkeeping JSON object
@@ -25,9 +25,9 @@ class Searcher():
             self.local_dict[search_term[0]] = eval(file.replace("<class 'list'>", 'list'))
 
         # Calculate tfidf for query
-        self.calculate_tfidf(self.local_dict[search_term[0]][search_term])
+        # self.calculate_tfidf(self.local_dict[search_term[0]][search_term])
         # Sort local dict
-        self.local_dict[search_term[0]][search_term].sort(key=lambda tup: tup[2], reverse=True)
+        # self.local_dict[search_term[0]][search_term].sort(key=lambda tup: tup[2], reverse=True)
         # Return the values for the query
         return self.local_dict[search_term[0]][search_term]
 
@@ -46,7 +46,7 @@ class Searcher():
         for query in queries.strip().split():
             for d in self.get_data(query):
                 counter_urls[d[0]] += 1
-                counter_word_count[d[0]] += d[2]
+                counter_word_count[d[0]] += d[3]
 
         results = sorted(counter_urls.items(), key=lambda x: (-x[1], -counter_word_count[x[0]]))
         for i in range(5):
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     # jsonObj = json.loads(lib)
     #
     # for doc in results:
-    #     print(doc[0], doc[1], doc[2], jsonObj[doc[0]])
+    #     print(doc[0], doc[1], doc[3], jsonObj[doc[0]])
 
 
 
