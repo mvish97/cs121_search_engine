@@ -8,7 +8,7 @@ class Searcher():
         self.result = []
         self.result_path = "data"
         self.corpus_size = 37497
-        self.bookkeeper = "WEBPAGES_RAW/" + "bookkeeping.json"
+        self.bookkeeper = "/Users/intern/Desktop/WEBPAGES_RAW/" + "bookkeeping.json"
         self.local_dict = {}
         try:
             # The bookkeeping JSON object
@@ -18,6 +18,7 @@ class Searcher():
             return
 
     def get_data(self, search_term):
+        search_term = search_term.lower()
         if search_term[0] not in self.local_dict:
             file = open("{}/{}".format(self.result_path, search_term[0])).read()
 
@@ -49,22 +50,31 @@ class Searcher():
                 counter_word_count[d[0]] += d[3]
 
         results = sorted(counter_urls.items(), key=lambda x: (-x[1], -counter_word_count[x[0]]))
-        for i in range(5):
+        to_return = ""
+        if len(results) == 0:
+            return "No Results"
+        elif len(results) < 5:
+            length = len(results)
+        else:
+            length = 5
+        for i in range(length):
             link = self.bookkeeping_obj[results[i][0]]
             if "www" not in link:
                 link = "www." + link
 
-            print("{}. {}".format(i + 1, link))
+            to_return += "{}) {}\n".format(i + 1, link)
+        return to_return
 
 
 if __name__ == '__main__':
 
     query = input("Enter your query (quit to end program): ")
 
+    searcher = Searcher()
+
     while(query != "quit"):
-        searcher = Searcher()
-        searcher.get_urls(query)
-        query = input("\n Enter your query (quit to end program): ")
+        print(searcher.get_urls(query))
+        query = input("\nEnter your query (quit to end program): ")
 
     print("Have a nice day!")
 
