@@ -32,9 +32,9 @@ class SearchGUI:
         self.quit_button.grid(row=3, column=2, padx=5, pady=5, sticky=tkinter.S)
 
     def validate(self, query):
-        if not query:
-            self.results.set("Value Error. Try again.")
-            return False
+        # if not query:
+        #     self.results.set("Value Error. Try again.")
+        #     return False
         try:
             self.query = str(query)
             return True

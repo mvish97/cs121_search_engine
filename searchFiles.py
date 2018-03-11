@@ -8,7 +8,7 @@ class Searcher():
         self.result = []
         self.result_path = "data"
         self.corpus_size = 37497
-        self.bookkeeper = "/Users/intern/Desktop/WEBPAGES_RAW/" + "bookkeeping.json"
+        self.bookkeeper = "WEBPAGES_RAW/" + "bookkeeping.json"
         self.local_dict = {}
         try:
             # The bookkeeping JSON object
