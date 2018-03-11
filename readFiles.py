@@ -43,8 +43,11 @@ class Parser:
         soup = BeautifulSoup(open_file, 'html.parser')
         raw_text = ""
 
-        for text in soup.find_all(['b', 'h1', 'h2', 'h3', 'title', 'body', 'strong']):
-            raw_text += text.getText().strip() + " "
+        for tag in ['b', 'h1', 'h2', 'h3', 'title', 'body', 'strong']:
+            for text in soup.find_all(tag):
+                if tag == "title" or tag == "strong":
+                    print(tag, text.getText().strip())
+                raw_text += text.getText().strip() + " "
 
         return raw_text
 
@@ -78,9 +81,9 @@ class Parser:
 
 if __name__ == '__main__':
     r = Parser()
-    r.read_all()
-    r.write_file()
-    #print(r.tokenize_file((r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/3")))))
+    # r.read_all()
+    # r.write_file()
+    print(r.tokenize_file((r.html_to_text(r.file_to_text("WEBPAGES_CLEAN/0/6")))))
 
 
 

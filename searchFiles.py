@@ -50,13 +50,20 @@ class Searcher():
 
         results = sorted(counter_urls.items(), key=lambda x: (-x[1], -counter_word_count[x[0]]))
         for i in range(5):
-            print(results[i], self.bookkeeping_obj[results[i][0]])
+            print("{}. {}".format(i + 1, self.bookkeeping_obj[results[i][0]]))
 
 
 if __name__ == '__main__':
-    searcher = Searcher()
 
-    searcher.get_urls('informatics')
+    query = input("Enter your query (quit to end program): ")
+
+    while(query != "quit"):
+        searcher = Searcher()
+        searcher.get_urls(query)
+        query = input("\n Enter your query (quit to end program): ")
+
+    print("Have a nice day!")
+
     # results = searcher.get_data('irvine')
     #
     # file = "WEBPAGES_CLEAN/" + "bookkeeping.json"
