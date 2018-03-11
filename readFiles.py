@@ -29,9 +29,9 @@ class Parser:
             counter2 = 0
             while Path(self.html_path + str(counter1) + "/" + str(counter2)).exists():
                 # print(counter1, counter2)
-                self.add_to_dictionary(self.tokenize_file(self.html_to_text(\
-                    self.file_to_text(self.html_path + str(counter1) + "/" + str(counter2)))),\
-                    "{}/{}".format(counter1, counter2))
+                processed_html = self.html_to_text(self.file_to_text(self.html_path + str(counter1) + "/" + str(counter2)))
+
+                self.add_to_dictionary(self.tokenize_file(processed_html), "{}/{}".format(counter1, counter2))
                 counter2 += 1
 
             print("FOLDER: {} and FILES: {}".format(counter1, counter2))
@@ -42,13 +42,15 @@ class Parser:
         # Takes an open file and returns the text from it
         soup = BeautifulSoup(open_file, 'html.parser')
         raw_text = ""
+        weighted_text = ""
 
         for tag in ['b', 'h1', 'h2', 'h3', 'title', 'body', 'strong']:
             for text in soup.find_all(tag):
                 if tag == "title" or tag == "strong":
-                    print(tag, text.getText().strip())
+                    weighted_text += text.getText().strip() + " "
                 raw_text += text.getText().strip() + " "
 
+        print(self.tokenize_file(weighted_text))
         return raw_text
 
     def tokenize_file(self, html_text):
