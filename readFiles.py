@@ -18,7 +18,7 @@ class Parser:
         for alpha in ascii_lowercase:
             self.data[alpha] = defaultdict(list)
         for num in range(0, 10):
-            self.data[num] = defaultdict(list)
+            self.data[str(num)] = defaultdict(list)
 
     def file_to_text(self, file_path):
         # takes in the html file path and return an open object if it can
@@ -67,7 +67,7 @@ class Parser:
         stop_words = set(stopwords.words('english'))
 
         for word in text:
-            if len(word) > 0 and word.lower().isalpha() and word not in stop_words:
+            if len(word) > 0 and (word.lower().isalpha() or word.lower().isnumeric()) and word not in stop_words:
                 result[word.lower()] += 1
 
         return result
@@ -75,6 +75,7 @@ class Parser:
     def add_to_dictionary(self, token_dict_raw, token_dict_weighted, file_id):
         # Adds the file tokens to the main dictionary
         for k, v in token_dict_raw.items():
+
             if k[0] in self.data:
                 self.data[k[0]][k].append([file_id, v, 0, 0])
 
@@ -113,6 +114,7 @@ if __name__ == '__main__':
     r.read_all()
     r.calculate_tfidf()
     r.write_file()
+
     # processed_html = r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/6"))
     #
     # r.add_to_dictionary(r.tokenize_file(processed_html[0]), r.tokenize_file(processed_html[1]),
@@ -121,7 +123,7 @@ if __name__ == '__main__':
     # r.calculate_tfidf()
     # for k, v in r.data.items():
     #     print(k, v)
-    # print(r.tokenize_file((r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/6")))))
+    #print(r.tokenize_file((r.html_to_text(r.file_to_text("WEBPAGES_RAW/0/6")))))
 
 
 
