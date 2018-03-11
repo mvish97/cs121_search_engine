@@ -98,6 +98,7 @@ class Parser:
     def calculate_tfidf(self):
         # Calculates the tf-idf for a given posting of a term and updates the posting
         for alpha, words in self.data.items():
+            print("Calculating tf-idf for {}".format(alpha))
             for word, posting in words.items():
                 idf = math.log(self.corpus_size/len(posting))
 

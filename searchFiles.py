@@ -50,7 +50,11 @@ class Searcher():
 
         results = sorted(counter_urls.items(), key=lambda x: (-x[1], -counter_word_count[x[0]]))
         for i in range(5):
-            print("{}. {}".format(i + 1, self.bookkeeping_obj[results[i][0]]))
+            link = self.bookkeeping_obj[results[i][0]]
+            if "www" not in link:
+                link = "www." + link
+
+            print("{}. {}".format(i + 1, link))
 
 
 if __name__ == '__main__':
